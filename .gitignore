@@ -1,0 +1,9 @@
+bin/
+.av-tmp-*
+
+# Plaintext env files; the encrypted ones are meant to be committed.
+.env
+*.env
+.env.*
+!*.env.age
+!*.env.age.recipients
