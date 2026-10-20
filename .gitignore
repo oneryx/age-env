@@ -1,4 +1,5 @@
 bin/
+dist/
 .av-tmp-*
 
 # Plaintext env files; the encrypted ones are meant to be committed.

@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - name: Install age (for the interop test)
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y age
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then echo "Not gofmt'ed:"; echo "$unformatted"; exit 1; fi
+      - run: go vet ./...
+      - run: go test -race ./...
+      - run: make build && ./bin/av version

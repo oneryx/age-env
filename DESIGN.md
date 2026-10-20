@@ -184,6 +184,22 @@ Output conventions: data goes to **stdout** (`print`, `get`, `export`,
   level (prompt callbacks) and via `save` with `passphraseTarget` directly.
 * Run `make test`, `make vet`, `gofmt -l .`.
 
+## Build, CI and release
+
+* `make build` / `make install` stamp the version from `git describe` via
+  `-X main.version=…`. A plain `go build` falls back to Go's VCS version
+  (`main.go`).
+* `.github/workflows/ci.yml`: on pushes to `main` and on PRs, runs gofmt,
+  vet, `go test -race` (Linux with `age` installed for the interop test,
+  and macOS) and `make build`.
+* `.github/workflows/release.yml`: on `v*` tags, runs the tests and then
+  GoReleaser (`.goreleaser.yaml`): static (`CGO_ENABLED=0`) linux/darwin ×
+  amd64/arm64 binaries, version = the tag, `tar.gz` archives plus
+  `checksums.txt`, published as a GitHub release. No Windows build: the
+  editor and prompts need `sh` and `/dev/tty`.
+* Try a release locally: `goreleaser release --snapshot --clean`, which
+  writes to `dist/` (ignored by git).
+
 ## Recipes
 
 * **New command:** add `xxxCmd()` to the right `cmd_*.go`, register it in

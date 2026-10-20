@@ -4,9 +4,21 @@ Keep `.env` files encrypted with [age](https://github.com/FiloSottile/age), and 
 
 ## Install
 
+Download a binary for Linux or macOS (amd64/arm64) from the
+[releases page](https://github.com/oneryx/age-env/releases), or build it:
+
 ```sh
 go install github.com/oneryx/age-env/cmd/av@latest
 # or: make build   (binary in bin/av)
+```
+
+### Releasing
+
+Push a version tag; the `Release` workflow tests, builds and publishes a
+GitHub release with archives and checksums ([.goreleaser.yaml](.goreleaser.yaml)):
+
+```sh
+git tag v0.2.0 && git push origin v0.2.0
 ```
 
 ## Usage
